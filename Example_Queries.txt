@@ -1,0 +1,83 @@
+
+1.Buses assigned to a particular journey _ BUS-TABLE
+ SELECT * FROM BUS_DETAILS WHERE BUS_ID IN (SELECT DISTINCT BUS_ID FROM JOURNEY_DETAILS WHERE SOURCE='VADODARA' AND DESTINATION='AHMEDABAD');	
+
+2.Customers taking a particular journey - CBD & JD
+SELECT PC.NAME,PC.AGE,PC.PHONE_NUMBER,PC.BOOKING_ID,PC.SEAT_STATUS,PC.JOURNEY_ID,JD.JDDATE JOURNEY_DATE,JD.TTIME TIME FROM JOURNEY_DETAILS JD INNER JOIN (SELECT * FROM PASSENGER_DETAILS PD INNER JOIN CUSTOMER_BOOKING_DETAILS CBD ON PD.CUSTOMER_ID=CBD.CUSTOMER_ID WHERE CBD.SEAT_STATUS='confirmed')PC ON PC.JOURNEY_ID=JD.JOURNEY_ID WHERE JD.JOURNEY_ID='J21' and PC.AGE>=50 ORDER 	BY AGE;
+
+3.Buses assigned to a particular garage - GD
+SELECT B.BUS_ID,B.BUS_TYPE,B.AC_NONAC,B.OWNER_REG,G.NAME GARAGE_NAME,G.GARAGE_ID,G.ADDRESS FROM BUS_DETAILS B JOIN GARAGE_DETAILS G ON B.BUS_ID=G.BUS_ID WHERE G.GARAGE_ID='G42';
+
+4.drivers and assigned buses and journey DD - JD
+SELECT DRIVER_ID,NAME,BUS_ID,HIRE_DATE FROM DRIVER_DETAILS JOIN JOURNEY_DETAILS ON DRIVER_DETAILS.BUS_ID = JOURNEY_DETAILS.BUS_ID WHERE JOURNEY_DETAILS.DESTINATION IN ('AHMEDABAD','UDAIPUR');
+
+5.Drivers being managed by a particular manager DD - MD
+select d1.name,d1.driver_id,d2.manager_id,d2.name from driver_details d1 join manager_details d2 on d1.manager_id=d2.manager_id where d1.manager_id = 'M01';
+
+6.complete passenger details - name and all plus their booking details - PD-CBD
+SQL> SELECT * from passenger_details natural join customer_booking_details where customer_id in ('C10','C12') order by customer_id;
+
+7.Buses which have AC - BD
+select * from bus_details where ac_nonac='ac';
+
+8.specific journeys - PD - CBD - JD - SRD 12
+SELECT JOURNEY_ID,NAME,CUSTOMER_ID,BOOKING_ID,SOURCE,DESTINATION,BOOKING_DATE FROM (SELECT P.NAME,P.CUSTOMER_ID,C.BOOKING_ID,C.JOURNEY_ID,C.BOOKING_DATE FROM PASSENGER_DETAILS P JOIN CUSTOMER_BOOKING_DETAILS C ON P.CUSTOMER_ID=C.CUSTOMER_ID) NATURAL JOIN (SELECT J.SOURCE,J.DESTINATION,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID) WHERE ROUTE_TOWN1 IS NOT NULL OR ROUTE_TOWN2 IS NOT NULL OR ROUTE_TOWN3 IS NULL AND BOOKING_DATE='02-JUL-19';
+
+SELECT JOURNEY_ID,NAME,CUSTOMER_ID,BOOKING_ID,SOURCE,DESTINATION,BOOKING_DATE,JDDATE FROM (SELECT P.NAME,P.CUSTOMER_ID,C.BOOKING_ID,C.JOURNEY_ID,C.BOOKING_DATE FROM PASSENGER_DETAILS P JOIN CUSTOMER_BOOKING_DETAILS C ON P.CUSTOMER_ID=C.CUSTOMER_ID) NATURAL JOIN (SELECT J.SOURCE,J.DESTINATION,J.JDDATE,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID) WHERE BOOKING_DATE = '01-JUL-19' AND JDDATE = '07-JUL-19' AND (ROUTE_TOWN1 IS NULL OR ROUTE_TOWN2 IS NULL OR ROUTE_TOWN3 IS NULL);
+
+9.drivers with more experience - DD
+select driver_id,name,hire_date from driver_details where trunc(((sysdate-hire_date)/365),0)>=20;
+
+10.Customers in a particular bus for one journey - PD-CBD-JD-BD
+ SELECT P.CUSTOMER_ID,P.NAME,P.PHONE_NUMBER,BCJ.BOOKING_ID,BCJ.BUS_ID,BCJ.JOURNEY_ID,BCJ.TTIME DATE_TIME FROM PASSENGER_DETAILS P INNER JOIN (SELECT BO.BOOKING_ID,BO.CUSTOMER_ID,BJ.BUS_ID,BJ.JOURNEY_ID,BJ.TTIME FROM CUSTOMER_BOOKING_DETAILS BO INNER JOIN (SELECT B.BUS_ID,J.JOURNEY_ID,J.TTIME FROM JOURNEY_DETAILS J INNER JOIN BUS_DETAILS B ON J.BUS_ID=B.BUS_ID WHERE J.TTIME='05-JULY-2019 06:00:00 AM' AND B.BUS_ID='B02') BJ ON BJ.JOURNEY_ID=BO.JOURNEY_ID WHERE BO.SEAT_STATUS='confirmed') BCJ ON BCJ.CUSTOMER_ID=P.CUSTOMER_ID;
+
+
+11.Details of Customer going on a non-stop journey to there destination - PD-CBD-JD-SRD
+SELECT JOURNEY_ID,NAME,CUSTOMER_ID,BOOKING_ID,SOURCE,DESTINATION FROM (SELECT P.NAME,P.CUSTOMER_ID,C.BOOKING_ID,C.JOURNEY_ID FROM PASSENGER_DETAILS P JOIN CUSTOMER_BOOKING_DETAILS C ON P.CUSTOMER_ID=C.CUSTOMER_ID) NATURAL JOIN (SELECT J.SOURCE,J.DESTINATION,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID) WHERE ROUTE_TOWN1 IS NULL AND ROUTE_TOWN2 IS NULL AND ROUTE_TOWN3 IS NULL;
+
+12.Details of Customer who will have 3-stops along the journey - PD-CBD-JD-SRD
+SELECT JOURNEY_ID,NAME,CUSTOMER_ID,BOOKING_ID,SOURCE,DESTINATION,BOOKING_DATE FROM (SELECT P.NAME,P.CUSTOMER_ID,C.BOOKING_ID,C.JOURNEY_ID,C.BOOKING_DATE FROM PASSENGER_DETAILS P JOIN CUSTOMER_BOOKING_DETAILS C ON P.CUSTOMER_ID=C.CUSTOMER_ID) NATURAL JOIN (SELECT J.SOURCE,J.DESTINATION,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID) WHERE (ROUTE_TOWN1 IS NOT NULL AND ROUTE_TOWN2 IS NOT NULL AND ROUTE_TOWN3 IS NOT NULL) AND BOOKING_DATE='01-JUL-19';
+
+13.DETAILS OF CUSTOMER having booking date of 3rd July 2019. - PD-CBD
+SELECT passenger_details.customer_id,passenger_details.name FROM passenger_details INNER JOIN customer_booking_details ON customer_booking_details.customer_id=passenger_details.customer_id WHERE customer_booking_details.booking_date='03-JULY-2019' GROUP BY PASSENGER_DETAILS.CUSTOMER_ID,PASSENGER_DETAILS.NAME ORDER BY PASSENGER_DETAILS.CUSTOMER_ID,PASSENGER_DETAILS.NAME;
+
+14.Details of Ac- Sleeper/Seater Buses going from bharuch to Navsari between 5th and 6th JULY
+
+SELECT * FROM bus_details INNER JOIN journey_details ON journey_details.bus_id=bus_details.bus_id where ac_nonac='ac' and bus_type in ('sleeper','seater') and source in ('BHARUCH') and destination='NAVSARI'and TTIME BETWEEN '05-JULY-2019 12:00:00 AM' AND '07-JULY-2019 12:00:00 AM';
+
+15.All buses on a p
+
+SELECT journey_details.source, journey_details.destination, service_route_details.operator FROM service_route_details INNER JOIN journey_details ON journey_details.route_id = service_route_details.route_id where journey_details.jddate='07-JULY-2019'  group by journey_details.source,journey_details.destination, service_route_details.operator ;
+
+16. Details of Drivers with rating more than or equal to 2 and their managers have only 3 sub-workers
+
+SELECT driver_details.driver_id, driver_details.name, driver_details.rating, manager_details.manager_id, manager_details.name FROM manager_details INNER JOIN driver_details ON manager_details.manager_id=driver_details.manager_id WHERE driver_details.rating>=2 and manager_details.sub_workers=3;
+
+17.Displaying the details of alll the passengers who are of age more than 60
+
+SELECT customer_booking_details.travel_date, customer_booking_details.booking_id, passenger_details.customer_id, passenger_details.name, passenger_details.phone_number FROM passenger_details INNER JOIN customer_booking_details ON customer_booking_details.customer_id=passenger_details.customer_id WHERE passenger_details.age>=60;
+
+18.Details of drivers who are driving bus between 9:30 AM and 12:00 AM on 5th July 2019 having bus_id B01 and having salary o 15000.
+
+SELECT DRIVER_ID,NAME,BUS_ID,J.JOURNEY_ID,J.SOURCE,J.DESTINATION,J.JDDATE,J.TTIME FROM DRIVER_DETAILS D NATURAL JOIN JOURNEY_DETAILS J WHERE J.TTIME BETWEEN '05-JULY-2019 12:00:00 AM' AND '05-JULY-2019 09:30:00 AM' AND BUS_ID = 'B01' AND D.SALARY=15000;
+
+19.Details of all the bus with source and destination which is a sleeper bus having atleast one stop.
+
+select k.bus_type,k.ac_nonac,k.source,k.destination from (SELECT * FROM bus_details INNER JOIN journey_details ON journey_details.bus_id=bus_details.bus_id) k inner join service_route_details on k.route_id = service_route_details.route_id WHERE k.bus_type='sleeper' AND k.ac_nonac = 'ac' AND (ROUTE_TOWN1 IS NULL OR ROUTE_TOWN2 IS NULL OR ROUTE_TOWN3 IS NULL) group by k.bus_type,k.ac_nonac,k.source,k.destination;
+
+20.Details of the passengers who has two bookings on the same day.
+
+SELECT booking_id, passenger_details.customer_id, passenger_details.name,booking_date,travel_date,passenger_details.phone_number FROM passenger_details INNER JOIN (select j.customer_id,booking_id,travel_date,j.booking_date from customer_booking_details INNER JOIN  (SELECT CUSTOMER_ID,BOOKING_DATE FROM ( SELECT CUSTOMER_ID,BOOKING_DATE,COUNT(BOOKING_DATE)"NUM" FROM CUSTOMER_BOOKING_DETAILS GROUP BY BOOKING_DATE,CUSTOMER_ID ORDER BY CUSTOMER_ID ) WHERE NUM=2 GROUP BY CUSTOMER_ID,BOOKING_DATE ORDER BY CUSTOMER_ID) j ON customer_booking_details.customer_id=j.customer_id and customer_booking_details.booking_date = j.booking_date order by customer_id,travel_date) M ON M.customer_id= passenger_details.customer_id;
+
+SELECT passenger_details.customer_id, passenger_details.name,booking_date FROM passenger_details INNER JOIN (select j.customer_id,booking_id,travel_date,j.booking_date from customer_booking_details INNER JOIN  (SELECT CUSTOMER_ID,BOOKING_DATE FROM ( SELECT CUSTOMER_ID,BOOKING_DATE,COUNT(BOOKING_DATE)"NUM" FROM CUSTOMER_BOOKING_DETAILS GROUP BY BOOKING_DATE,CUSTOMER_ID ORDER BY CUSTOMER_ID ) WHERE NUM=2 GROUP BY CUSTOMER_ID,BOOKING_DATE ORDER BY CUSTOMER_ID) j ON customer_booking_details.customer_id=j.customer_id and customer_booking_details.booking_date = j.booking_date order by customer_id,travel_date) M ON M.customer_id= passenger_details.customer_id group by passenger_details.customer_id,passenger_details.name,booking_date;
+
+
+
+
+
+
+(
+ SELECT P.NAME,P.CUSTOMER_ID,C.BOOKING_ID,C.JOURNEY_ID FROM PASSENGER_DETAILS P JOIN CUSTOMER_BOOKING_DETAILS C ON P.CUSTOMER_ID=C.CUSTOMER_ID;
+ SELECT J.SOURCE,J.DESTINATION,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID;
+	 SELECT J.SOURCE,J.DESTINATION,S.ROUTE_TOWN1,S.ROUTE_TOWN2,S.ROUTE_TOWN3,J.JOURNEY_ID FROM JOURNEY_DETAILS J JOIN SERVICE_ROUTE_DETAILS S ON J.ROUTE_ID=S.ROUTE_ID WHERE S.ROUTE_TOWN1 IS NULL AND S.ROUTE_TOWN2 IS NULL AND S.ROUTE_TOWN3 IS NULL;
+)remove

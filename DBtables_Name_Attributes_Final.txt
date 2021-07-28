@@ -1,0 +1,69 @@
+Driver Details:
+1.Driver Id : primary key , 'DXXXX' , varchar(5)
+2.Name : varchar(20) , not null
+3.Phone Number : number(10)
+4.DOB : date , not null
+5.Salary : number(5)
+6.Hire_date : date , not null
+7.Manager_ID : varchar(5) , 'MXXXX' , foreign key reference(Manager Id)(ON DELETE SET NULL)
+8.Rating : number(1) , check <=5
+9.Assigned Bus Id : varchar(5) 'BXXXX' , foreign key reference to bus details(bus id)(ON DELETE SET NULL)
+
+Driver Manager Details:
+1.Manager Id :primary key, 'MXXXX' , varchar5 
+2.Name: varchar(20) , not null
+3.Phone Number : number(10)
+4.DOB : date , not null
+5.Salary : number(5)
+6.Hire_date : date , not null
+7.No.of Sub-workers:number(2)
+
+Bus details
+1. Bus id:BXXXX,not null,varchar(5),primary key
+2. Bus type / Make:not null,varchar(9),options(sleeper,seater)
+3. Ac/non ac:not null,varchar(6),ac/non-ac
+4. Seat Strength :number(2),not null
+5. Owner Registration:not null,varchar(6)
+6. Lease status:not null,options(on lease,owned)
+
+Passenger details
+1. Name:not null,varchar(40)
+2. Age:not null,number(3)
+3. Phone no:not null,number(10)
+4. Email id:varchar(20)
+5. Customer ID:varchar(5),CXXXX,primary key
+
+Journey details
+1. Source:not null,varchar(20)
+2. Destination:not null,varchar(20)
+3. Bus id:varchar(5) 'BXXXX' , foreign key reference to bus details(bus id)(ON DELETE SET NULL)
+4. Date:date , not null
+5. Time:not null, time
+6. On Bus Service: varchar(10),optioons(null,yes,no)
+7. Route id:'RXXXX',varchar(5),foreign key reference to Service-Route details(route id)(ON DELETE SET NULL)
+8. Operator Name: varchar(40), Not Null
+Composite primary key:Source,destination,bus id.
+
+Service-Route Details
+1.Route id:'RXXXX',varchar(5),primary key
+2.Source:not null,varchar(20)(change)
+3.Route Town 1:varchar(30)
+4.Route Town 2:varchar(30)
+5.Route Town 3:varchar(30)
+6.Destination:not null,varchar(5),discriminator
+
+Garage Details
+1.Garage ID:varchar(5) ,'GXXXX',primary key.
+2.Bus ID:varchar(5) ,'BXXXX' , foreign key reference to bus details(bus id)(ON DELETE SET NULL)
+3.Garage Name:not null,varchar(40)
+4.Address:varchar(60),not null(composite attribute-building no,street,road,city,state)
+5.Number:varchar(10),not null
+
+Customer-Booking Details
+1.booking id:primary key,varchar(6),BOXXXX
+2.seat status:not null,options(confirmed,cancelled)
+3.booking date:date , not null
+4.travel date:date , not null
+5.bus id:varchar(5) 'BXXXX' , foreign key reference to bus details(bus id)(ON DELETE SET NULL)
+6.seat num:not null,number(2)
+7.customer id:varchar(5),CXXXX,foreign key reference to Passenger details(customer id)(ON DELETE CASCADE)
