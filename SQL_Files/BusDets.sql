@@ -1,0 +1,12 @@
+INSERT INTO BUS_DETAILS VALUES('B01','seater','ac',42,'GJ4895','leased');
+INSERT INTO BUS_DETAILS VALUES('B02','seater','ac',42,'GJ6197','leased');
+INSERT INTO BUS_DETAILS VALUES('B03','seater','ac',42,'GJ6138','leased');
+INSERT INTO BUS_DETAILS VALUES('B04','seater','non-ac',42,'GJ3125','not leased');
+INSERT INTO BUS_DETAILS VALUES('B05','seater','non-ac',42,'GJ8873','not leased');
+INSERT INTO BUS_DETAILS VALUES('B06','seater','non-ac',42,'GJ1123','not leased');
+INSERT INTO BUS_DETAILS VALUES('B07','sleeper','ac',42,'GJ2255','leased');
+INSERT INTO BUS_DETAILS VALUES('B08','sleeper','ac',42,'GJ3333','leased');
+INSERT INTO BUS_DETAILS VALUES('B09','sleeper','ac',42,'GJ8305','leased');
+INSERT INTO BUS_DETAILS VALUES('B10','sleeper','non-ac',42,'GJ8305','not leased');
+INSERT INTO BUS_DETAILS VALUES('B11','sleeper','non-ac',42,'GJ4692','not leased');
+INSERT INTO BUS_DETAILS VALUES('B12','sleeper','non-ac',42,'GJ2182','not leased');

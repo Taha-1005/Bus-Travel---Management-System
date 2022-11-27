@@ -1,0 +1,12 @@
+INSERT INTO GARAGE_DETAILS VALUES('G11','B01','Wiser Automotives','Ground Floor, Tushar Complex, Waghodia, Vadodara, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G12','B02','Wiser Automotives','Ground Floor, Tushar Complex, Waghodia, Vadodara, Guajarat');
+INSERT INTO GARAGE_DETAILS VALUES('G21','B03','Pfizer Repair Works','GF-1 Repair Works, Opposite BMC Office , Kandivali, Mumbai , Maharashtra');
+INSERT INTO GARAGE_DETAILS VALUES('G31','B04','Walker Works','GF-3 Gajendra Building, Besides HDFC Office Building-1, Jaipur, Rajashthan');
+INSERT INTO GARAGE_DETAILS VALUES('G41','B05','Winston Works for Vehicles','GF-3 Hanistan Complex, Besides SBI Main Office, Paldi, Ahmedabad, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G42','B06','Winston Works for Vehicles','GF-3 Hanistan Complex, Besides SBI Main Office, Paldi, Ahmedabad, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G43','B07','Winston Works for Vehicles','GF-3 Hanistan Complex, Besides SBI Main Office, Paldi, Ahmedabad, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G51','B08','Broline Motor Works','Rakoom Complex, Besides SBI Main Office, Bharuch, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G52','B09','Broline Motor Works','Rakoom Complex, Besides SBI Main Office, Bharuch, Gujarat');
+INSERT INTO GARAGE_DETAILS VALUES('G61','B10','Westminster Repair Works','GF-3 Garud Building, Besides LIC Office Building-1, North-Noida , Delhi');
+INSERT INTO GARAGE_DETAILS VALUES('G62','B11','Westminster Repair Works','GF-3 Garud Building, Besides LIC Office Building-1, North-Noida , Delhi');
+INSERT INTO GARAGE_DETAILS VALUES('G71','B12','Wastran Repair Works','Jatayu Building, Besides St.Xavier Office, North-Panji , Goa');
